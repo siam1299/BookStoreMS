@@ -25,6 +25,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.home, name="home"),
     path("", include("accounts.urls")),
+    path("", include("books.urls")),
 ]
 
 if settings.DEBUG:

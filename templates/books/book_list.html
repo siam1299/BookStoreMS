@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+   <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+         <div>
+            <h1>Books</h1>
+         </div>
+         <div>
+            <a href="{% url 'add_book' %}" class="btn btn-primary">Add Book</a>
+         </div>
+      </div>
+   </div>
+
+   <div class="mt-2 row row-cols-1 row-cols-md-5 g-4">
+      {% for book in books %}
+         <div class="col">
+            <div class="card">
+               {% if book.image %}
+                  <div class="book-card-img-container">
+                     <img src="{{ book.image.url }}"
+                          width="80"
+                          height="auto"
+                          class="card-img-top book-card-img"
+                          alt="{{ book.title }}" />
+                  </div>
+               {% endif %}
+               <div class="card-body">
+                  <span class="badge bg-secondary mb-2">{{ book.category }}</span>
+                  <h5 class="card-title">{{ book.title }}</h5>
+                  <p class="card-text row">
+                     <small class="text-muted">By {{ book.author }}</small>
+                     <strong>Price: ${{ book.price }}</strong>
+                  </p>
+               </div>
+            </div>
+         </div>
+      {% endfor %}
+   </div>
+{% endblock content %}
