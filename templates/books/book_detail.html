@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+   <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item">
+            <a href="{% url 'home' %}">Home</a>
+         </li>
+         <li class="breadcrumb-item">
+            <a href="{% url 'book_list' %}">Books</a>
+         </li>
+         <li class="breadcrumb-item active" aria-current="page">{{ book.title }}</li>
+      </ol>
+   </nav>
+
+   <div class="row mt-5 gap-3">
+      <div class="col-4">
+         {% if book.image %}
+            <img src="{{ book.image.url }}"
+                 class="img-fluid rounded shadow"
+                 alt="{{ book.title }}"
+                 width="{{ book.image.width }}"
+                 height="{{ book.image.height }}" />
+         {% endif %}
+      </div>
+
+      <div class="col">
+         <h1>{{ book.title }}</h1>
+         <p class="lead">
+            by <strong>{{ book.author }}</strong>
+         </p>
+         <span class="badge bg-secondary mb-3">{{ book.category }}</span>
+         <p class="fs-4">Price: ${{ book.price }}</p>
+         <p>{{ book.description }}</p>
+         <a href="" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+      </div>
+   </div>
+{% endblock content %}
