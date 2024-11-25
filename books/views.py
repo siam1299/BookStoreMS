@@ -16,8 +16,16 @@ def add_book(request):
 
 
 def book_list(request):
-    books = Book.objects.all()
-    return render(request, "books/book_list.html", {"books": books})
+    q = request.GET.get("q")
+
+    if q:
+        books = Book.objects.filter(title__icontains=q)
+        context = {"books": books}
+    else:
+        books = Book.objects.all()
+        context = {"books": books, "query": q}
+
+    return render(request, "books/book_list.html", context)
 
 
 def book_detail(request, pk):
