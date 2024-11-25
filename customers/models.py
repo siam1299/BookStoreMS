@@ -14,12 +14,12 @@ class Customer(models.Model):
 
 
 class Cart(models.Model):
-    customer = models.OneToOneField(Customer, on_delete=models.CASCADE, related_name="cart")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_items = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"Cart for {self.customer.user.username}"
+        return f"Cart for {self.user.username}"
 
 
 class CartItem(models.Model):
@@ -28,4 +28,4 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.quantity} items in cart"
+        return f"{self.quantity} x {self.book.title}"
