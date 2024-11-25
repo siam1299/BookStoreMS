@@ -5,8 +5,10 @@ from customers.models import Cart, CartItem
 
 
 # Create your views here.
+@login_required
 def cart(request):
-    return render(request, "customers/cart.html")
+    cart = Cart.objects.get(user=request.user)
+    return render(request, "customers/cart.html", {"cart": cart})
 
 
 @login_required
@@ -20,3 +22,17 @@ def add_to_cart(request, pk):
     cart_item.save()
 
     return redirect(request.META.get("HTTP_REFERER", "book_list"))
+
+
+@login_required
+def update_quantity(request, pk):
+    cart_item = CartItem.objects.get(pk=pk)
+    action = request.POST.get("action")
+
+    if action == "delete":
+        cart_item.delete()
+    else:
+        cart_item.quantity += 1 if action == "increase" else -1
+        cart_item.save()
+
+    return redirect(request.META.get("HTTP_REFERER", "cart"))
