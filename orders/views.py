@@ -41,8 +41,14 @@ def checkout(request):
                 # delete the cart item
                 cart_item.delete()
 
-            return redirect("home")
+            return redirect("order_confirmation", order_id=order.id)
     else:
         form = CheckoutForm()
 
     return render(request, "orders/checkout.html", {"form": form, "cart": cart})
+
+
+@login_required
+def order_confirmation(request, order_id):
+    order = Order.objects.get(id=order_id)
+    return render(request, "orders/order_confirmation.html", {"order": order})
