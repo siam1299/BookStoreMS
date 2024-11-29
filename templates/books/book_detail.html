@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
    <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -32,7 +32,49 @@
          <span class="badge bg-secondary mb-3">{{ book.category }}</span>
          <p class="fs-4">Price: ${{ book.price }}</p>
          <p>{{ book.description }}</p>
-         <a href="{% url 'add_to_cart' book.pk %}" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+
+         {% if not request.user.is_superuser %}
+            <a href="{% url 'add_to_cart' book.pk %}" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+         {% endif %}
+
+         <!-- If the user is authenticated and has purchased the book, show the review form -->
+         {% if request.user.is_authenticated and is_purchased %}
+            <div class="mt-5 col-6">
+               <h4>Leave a review</h4>
+               <form method="post" action="{% url 'add_book_review' book.pk %}">
+                  {% csrf_token %}
+                  {{ form|crispy }}
+                  <button class="btn btn-secondary mt-3" type="submit">Submit</button>
+               </form>
+            </div>
+         {% endif %}
       </div>
    </div>
+
+   
+   <h4 class="mt-5">Reviews</h4>
+   {% if reviews %}
+      {% for review in reviews %}
+         <div class="card mb-3">
+            <div class="card-body">
+               <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="card-subtitle text-muted">{{ review.user.username }}</h6>
+                  <small class="text-muted">{{ review.created_at|date:"F j, Y" }}</small>
+               </div>
+               <div class="mb-2">
+                  {% for i in "12345"|make_list %}
+                     {% if forloop.counter <= review.stars %}
+                        <i class="fas fa-star text-warning"></i>
+                     {% else %}
+                        <i class="far fa-star text-warning"></i>
+                     {% endif %}
+                  {% endfor %}
+               </div>
+               <p class="card-text">{{ review.text }}</p>
+            </div>
+         </div>
+      {% endfor %}
+   {% else %}
+      <p>No reviews yet.</p>
+   {% endif %}
 {% endblock content %}
