@@ -1,3 +1,12 @@
 .quantity-input {
    width: 120px;
 }
+
+.book-card-img-container {
+   height: 300px;
+   overflow: hidden;
+}
+
+.book-card-img {
+   object-fit: cover;
+}
