@@ -21,6 +21,24 @@ def add_book(request):
     return render(request, "books/book_form.html", {"form": form})
 
 
+@login_required
+def update_book(request, pk):
+    # only superusers can update books
+    if not request.user.is_superuser:
+        return redirect("home")
+
+    book = Book.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect("manage_books")
+    else:
+        form = BookForm(instance=book)
+    return render(request, "books/book_form.html", {"form": form, "update": True})
+
+
 def book_list(request):
     q = request.GET.get("q")
 
