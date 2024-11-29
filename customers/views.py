@@ -7,7 +7,10 @@ from customers.models import Cart, CartItem
 # Create your views here.
 @login_required
 def cart(request):
-    cart = Cart.objects.get(user=request.user)
+    try:
+        cart = Cart.objects.get(user=request.user)
+    except Cart.DoesNotExist:
+        cart = Cart.objects.create(user=request.user)
     return render(request, "customers/cart.html", {"cart": cart})
 
 
