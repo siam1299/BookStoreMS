@@ -71,3 +71,13 @@ def add_book_review(request, pk):
 
 def check_purchased(request, book_pk):
     return OrderItem.objects.filter(order__customer__user=request.user, book__pk=book_pk).exists()
+
+
+@login_required
+def manage_books(request):
+    # only superusers can manage books
+    if not request.user.is_superuser:
+        return redirect("home")
+
+    books = Book.objects.all()
+    return render(request, "books/manage_books.html", {"books": books})

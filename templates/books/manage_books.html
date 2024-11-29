@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+   <h2>Manage Books</h2>
+
+   <table class="table">
+      <thead>
+         <tr>
+            <th>Cover</th>
+            <th>Book details</th>
+            <th>Price</th>
+            <th>Points</th>
+            <th>Stock</th>
+            <th>Actions</th>
+         </tr>
+      </thead>
+      <tbody>
+         {% for book in books %}
+            <tr>
+               <td>
+                  {% if book.image %}
+                     <img src="{{ book.image.url }}"
+                          alt="{{ book.title }}"
+                          width="80"
+                          height="auto"
+                          class="h-100" />
+                  {% endif %}
+               </td>
+               <td>
+                  <span class="badge rounded-pill bg-secondary mb-1">{{ book.category }}</span>
+                  <br />
+                  {{ book.title }}
+                  <br />
+                  <small class="text-muted">by {{ book.author }}</small>
+               </td>
+               <td>${{ book.price }}</td>
+               <td>{{ book.points }}</td>
+               <td>{{ book.stock }}</td>
+               <td>
+                  <a href="{% url 'book_detail' book.pk %}" class="btn btn-info btn-sm">
+                     <i class="fas fa-eye"></i> View
+                  </a>
+                  <a href="" class="btn btn-primary btn-sm">
+                     <i class="fas fa-edit"></i> Edit
+                  </a>
+               </td>
+            </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+{% endblock content %}
