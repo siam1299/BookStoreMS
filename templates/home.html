@@ -2,7 +2,7 @@
 
 {% block content %}
    {% if user.is_authenticated %}
-      <h1>Hello {{ user.username }}</h1>
+      <h1>Welcome to Green Book Homepage, {{ user.username }}</h1>
    {% else %}
       <h1>
          Please <a href="{% url 'login' %}">login</a>
